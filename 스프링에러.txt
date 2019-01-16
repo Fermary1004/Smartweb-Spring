@@ -1,0 +1,7 @@
+ERRORS
+
+
+404 Not Found (url없음) : Controler에 Mapping이 안되어있는 경우
+
+404 Not Found (url있음) : jsp파일이 없음(보통의 404)
+
