@@ -37,6 +37,9 @@ public class HomeController {
 	public String signupGet(Boolean fail, Model model) {
 		if (fail == null) {
 			fail = false;
+			// 처음에 fail을 지정하지 않고 /signup으로 바로 접속할때
+			// ?fail=값에 아무값도 들어있지 않기 때문에 에러가 날 수 있으므로 방지한다
+			// 이때문에 처음에 null값이 있을 수 있도록 boolean을 하단에서 wrapping해서 넘겨준다
 		}
 		model.addAttribute("fail", fail);
 		return "account/signup";
