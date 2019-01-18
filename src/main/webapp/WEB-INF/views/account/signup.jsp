@@ -22,6 +22,9 @@
 		background-color: #FFFFFF;
 		border: 1px solid #000000;
 	}
+	.radio {
+		float : none;
+	}
 </style>
 </head>
 <body>
@@ -38,6 +41,12 @@
 		<div>
 			<label>E-MAIL : </label>
 			<input name="email" type="email" />
+		</div>
+		<div>
+			<input class="radio" type="radio" value="male" id="male" name="gender" checked />
+			<label for="male">남성</label>
+			<input class="radio" type="radio" value="female" id="female" name="gender" />
+			<label for="female">여성</label>
 		</div>
 		<div>
 			<button type="submit">sign up please</button>

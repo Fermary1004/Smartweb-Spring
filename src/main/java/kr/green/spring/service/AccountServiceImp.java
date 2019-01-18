@@ -24,11 +24,24 @@ public class AccountServiceImp implements AccountService {
 		AccountVo valCheck = accountDao.getAccount(idCheck);
 		
 		if (valCheck == null) {
+			accountVo.setAuthority("user");
 			accountDao.insertAccount(accountVo);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean login(String id, String pw) {
+		
+		AccountVo checkAccount = accountDao.getAccount(id); 
+		if (checkAccount == null) {
+			return false;
+		} else if (checkAccount.getPw().equals(id) == false) {
+			// 문자열 비교는 equals를 사용한다 ==를 사용하면 다르게 나온다
+			return false;
+		} else return true;
 	}
 
 }

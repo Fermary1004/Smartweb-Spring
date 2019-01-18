@@ -1,7 +1,5 @@
 package kr.green.spring.controller;
 
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,19 +16,22 @@ public class HomeController {
 	private AccountService accountService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String homeGet(Locale locale, Model model) {
-					
-		model.addAttribute("serverTime", "서버시간" );
-		System.out.println(accountService.getAccount("firststep"));
+	public String homeGet(Model model) {
+		model.addAttribute("login", "fail");
 		return "home";
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String homePost(String name) {
-		/* jsp에서 넘어온 데이터의 name과 일치시키는 것에 주의  */
-		System.out.println("jsp에서 받아온 값 : " + name);
+	public String homePost(String id, String pw, Model model) {
 		
-		return "redirect:/";
+		if (accountService.login(id, pw)) {
+			model.addAttribute("login", id);
+			return "redirect:/bbs/list";
+			// bbs로 가는 매핑정보는 보드컨트롤러로 넘어가게 된다(보드 컨트롤러 참조)
+		} else {
+			model.addAttribute("login", "fail");
+			return "redirect:/";
+		}
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
