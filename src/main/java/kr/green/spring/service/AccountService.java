@@ -8,5 +8,5 @@ public interface AccountService {
 
 	public boolean signup(AccountVo accountVo);
 
-	public boolean login(String id, String pw);
+	public AccountVo login(String id, String pw);
 }

@@ -1,6 +1,7 @@
 package kr.green.spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.green.spring.dao.AccountDao;
@@ -12,6 +13,9 @@ public class AccountServiceImp implements AccountService {
 	// Autowired는 객체생성을 자동으로 해주는 옵션
 	@Autowired
 	private AccountDao accountDao;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public AccountVo getAccount(String id) {
@@ -24,6 +28,8 @@ public class AccountServiceImp implements AccountService {
 		AccountVo valCheck = accountDao.getAccount(idCheck);
 		
 		if (valCheck == null) {
+			String encodedPassword = passwordEncoder.encode(accountVo.getPw());
+			accountVo.setPw(encodedPassword);
 			accountVo.setAuthority("user");
 			accountDao.insertAccount(accountVo);
 			return true;
@@ -33,15 +39,13 @@ public class AccountServiceImp implements AccountService {
 	}
 
 	@Override
-	public boolean login(String id, String pw) {
-		
-		AccountVo checkAccount = accountDao.getAccount(id); 
-		if (checkAccount == null) {
-			return false;
-		} else if (checkAccount.getPw().equals(id) == false) {
-			// 문자열 비교는 equals를 사용한다 ==를 사용하면 다르게 나온다
-			return false;
-		} else return true;
+	public AccountVo login(String id, String pw) {
+		AccountVo user = accountDao.getAccount(id); 
+		if (user == null) {
+			return null;
+		} else if (passwordEncoder.matches(pw, user.getPw()) == false) {
+			return null;
+		} else return user;
 	}
 
 }

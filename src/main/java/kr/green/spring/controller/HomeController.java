@@ -23,13 +23,12 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String homePost(String id, String pw, Model model) {
-		
-		if (accountService.login(id, pw)) {
-			model.addAttribute("login", id);
+		AccountVo user = accountService.login(id, pw); 
+		if (user != null) {
+			model.addAttribute("user", user);
 			return "redirect:/bbs/list";
 			// bbs로 가는 매핑정보는 보드컨트롤러로 넘어가게 된다(보드 컨트롤러 참조)
 		} else {
-			model.addAttribute("login", "fail");
 			return "redirect:/";
 		}
 	}

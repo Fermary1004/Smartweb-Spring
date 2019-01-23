@@ -49,9 +49,14 @@
 			<label for="female">여성</label>
 		</div>
 		<div>
-			<button type="submit">sign up please</button>
+			<button type="submit">Sign up</button>
 		</div>
 	</form>
+	<div>
+		<a href="<%= request.getContextPath() %>/">
+			<button type="button">Login</button>
+		</a>
+	</div>
 	<script>
 		var check = ${fail};
 		if (check == true){

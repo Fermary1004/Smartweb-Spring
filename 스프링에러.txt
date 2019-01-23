@@ -1,7 +1,90 @@
 ERRORS
 
+(springrhk mybatis DB연동 순서 : mysql설치 -> 쉐마&테이블 세팅 -> pom.xml에 의존성 부여(mybatis, mybatis-spring, mysql-connector-java, spring-jdbc) ->
+
+ -> root-context.xml에 mysql 정보와 mapper 정보를 추가, 네임스페이스 탭에서 aop, beans, context, jdbc, mybatis-spring를 체크 -> 
+
+ -> 이후 controller, service, dao, mapper, vo등을 만들어 구현)
+
+
+
+
 
 404 Not Found (url없음) : Controler에 Mapping이 안되어있는 경우
 
 404 Not Found (url있음) : jsp파일이 없음(보통의 404)
+
+
+
+
+
+mapper는 src/main/resources의 이름을 가진 패키지 그룹에 넣어야한다(유사 디렉터리가 있으므로 주의)
+
+
+
+
+
+Error creating bean with name 'homeController': Injection of autowired dependencies failed
+
+ 원인 : servlet.context.xml파일의 context:component-scan base-package가 잘못 지정됨 패키지를 여러개로 나눌 경우, 전체 패키지를 포함하는 값으로 지정해야함
+
+ 예시 : kr.green.spring.controller = 이렇게 설정하면 kr.green.spring.dao같은 애들은 불러올 수 없게 된다 모두를 포함하는 값인 kr.green.spring으로 수정해준다
+
+
+
+
+
+Unable to load authentication plugin 'caching_sha2_pass.....
+
+ 원인 : pom.xml안의 mysql-connector-java의 의존성 세팅의 버전이 잘못 되었을때 일어나는 버그
+
+
+
+
+
+컨트롤러 : 
+
+1. URI가 주어지면 URI에 맞는 메소드를 찾아서 실행후 jsp를 연결하거나 다른 URI로 보낸다
+
+2. jsp에서 정보를 받아서 처리하거나 jsp로 정보를 전달한다
+
+3. 업무 분담을 위해서 service에 필요한 기능을 구현한다
+
+
+서비스 : 
+
+1. 컨트롤러에서 전달받은 매개변수(인자, 파라미터)를 가공하거나(예를 들면 비밀번호 암호화) 또는 DB에 있는 정보를 가져와서 가공을 할 수도 있다
+
+
+DAO : 
+
+1. DB에 접근하기 위한 인터페이스로 함수를 선언한다
+
+
+MAPPER
+
+1. DAO와 연결되어 실행될 쿼리문을 호출한다
+
+
+
+
+
+jsp > 컨트롤러 > 서비스 > 다오 > 매퍼
+
+ 
+회원가입 페이지를 새로 만들 때
+
+1. URI를 설정 : localhost:8080/spring/signup
+
+2. 컨트롤러에 해당 URI를 처리할 수 있는 메소드 생성
+
+3. jsp 생성 : account/signup.jsp
+
+4. jsp 구현
+
+5. 컨트롤러에 jsp에서 넘겨받은 매개변수를 설정
+
+6. service (+implement) > dao > mapper에 메소드 생성 및 구현
+
+7. 컨트롤러에서 테스트
 

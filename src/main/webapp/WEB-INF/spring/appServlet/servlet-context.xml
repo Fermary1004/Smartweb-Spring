@@ -23,6 +23,33 @@
 	
 	<context:component-scan base-package="kr.green.spring" />
 	
+	<beans:bean id="loginInterceptor" 
+	class="kr.green.spring.interceptor.LoginInterceptor"></beans:bean>
+	<!-- interceptor들을 등록 -->
+	<beans:bean id="authInterceptor" 
+	class="kr.green.spring.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="unauthInterceptor" 
+	class="kr.green.spring.interceptor.UnauthInterceptor"></beans:bean>
 	
+	<interceptors>
+    <interceptor>
+    	<mapping path="/"/>
+    	<!-- path는 여러개여도 된다 (login할 수 있는 페이지가 여러개라면 추가) -->
+    	<!-- mapping된 uri로 들어가면 -->
+    	<beans:ref bean="loginInterceptor"/>
+    	<!-- 이 interceptor가 실행된다 -->
+    	<!-- 여기서 지칭하는 bean은 위에서 설정해둔 id이고 위의 beans를 참조해서 실행된다 -->
+    </interceptor>
+    <interceptor>
+      <mapping path="/bbs"/>
+      <mapping path="/bbs/*"/>
+      <beans:ref bean="authInterceptor"/>
+    </interceptor>
+    <interceptor>
+      <mapping path="/"/>
+      <mapping path="/signup"/>
+      <beans:ref bean="unauthInterceptor"/>
+    </interceptor>
+	</interceptors>
 	
 </beans:beans>
